@@ -26,7 +26,7 @@ echo "Step 3: Importing TRIRIGA platform data"
 $ANT -f build.xml db-data-import
 
 echo "Step 4: Deploying Liberty server configuration"
-$ANT -f wlp-build.xml wlp-deploy-container
+$ANT -f wlp-build.xml wlp-deploy
 
 echo "Marking installation as completed"
 touch /opt/tririga/.installed
