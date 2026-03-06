@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+*.out
+*.err
+
+# Temp / backups
+*.tmp
+*.bak
+*.old
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+*.iml
+
+# Node / npm
+node_modules
+
+# Build artifacts
+dist
+build
+
+# Database dumps
+*.sql
+*.dump
+
+# Ignore compressed archives except TRIRIGA data package
+*.tar
+*.gz
+*.7z
+
+# Keep required files
+!Dockerfile
+!docker-compose.yml
+!entrypoint.sh
+!data.zip
+!Tririga/
+
+# TRIRIGA runtime folders
+Tririga/log/*
+Tririga/userfiles/*
+Tririga/temp/*
+Tririga/work/*
+
+# Liberty runtime
+Tririga/wlp/output
+Tririga/wlp/usr/servers/*/logs
+
+# Installer leftovers
+Tririga/*.log
+Tririga/*.tmp
