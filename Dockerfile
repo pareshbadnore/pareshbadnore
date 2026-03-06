@@ -8,9 +8,10 @@ WORKDIR /opt
 
 COPY --chown=1001:0 Tririga /opt/tririga
 COPY --chown=1001:0 data.zip /opt/tririga/data.zip
+COPY --chown=1001:0 install-tririga.sh /opt/tririga/install-tririga.sh
 
-COPY start-server.sh /start-server.sh
-RUN chmod +x /start-server.sh
+COPY --chown=1001:0 start-server.sh /start-server.sh
+RUN chmod +x /start-server.sh /opt/tririga/install-tririga.sh
 
 USER 1001
 

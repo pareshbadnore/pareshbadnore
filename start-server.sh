@@ -1,21 +1,36 @@
 #!/bin/bash
 set -e
 
-echo "Waiting for DB2..."
+DB_HOST=${DB_HOST:-tririga-db2}
+DB_PORT=${DB_PORT:-50000}
 
-until nc -z db2 50000; do
-  echo "DB2 not ready yet..."
-  sleep 5
-done
+wait_for_db2() {
+  echo "Waiting for DB2 at ${DB_HOST}:${DB_PORT}..."
 
-echo "DB2 is ready."
+  until nc -z "${DB_HOST}" "${DB_PORT}"; do
+    echo "DB2 not ready yet..."
+    sleep 5
+  done
 
-cd /opt/tririga
-rm -f /opt/ibm/wlp/usr/servers/defaultServer/apps/ibm-tririga.war.xml
-echo "Deploying TRIRIGA to Liberty..."
+  echo "DB2 is reachable. Waiting 10s for DB2 to finish internal startup..."
+  sleep 10
+}
 
-tools/apache-ant-1.10.12/bin/ant -f wlp-build.xml wlp-deploy-container
+install_tririga_if_needed() {
+  if [ -f /opt/tririga/.installed ]; then
+    echo "TRIRIGA installation marker found. Skipping first-time install."
+    return
+  fi
 
-echo "Starting Liberty server..."
+  echo "First-time install required. Running install-tririga.sh..."
+  /opt/tririga/install-tririga.sh
+}
 
-exec /opt/tririga/wlp/bin/server run tririgaServer
+start_liberty() {
+  echo "Starting Liberty server..."
+  exec /opt/tririga/wlp/bin/server run tririgaServer
+}
+
+wait_for_db2
+install_tririga_if_needed
+start_liberty
